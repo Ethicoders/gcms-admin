@@ -1,21 +1,18 @@
 import ManageResource from './ManageResource.vue';
 import gql from 'graphql-tag';
-import { getTypeByName, convertToGQLScalar } from '@/utils/graphql';
+import { convertToGQLScalar } from '@/utils/graphql';
 import Component from 'vue-class-component';
 
 @Component
 export default class UpdatePlugin extends ManageResource {
   public async created() {
     this.onInit();
-    this.loading = false;
   }
   protected async onInit() {
-    console.log('in');
-
     const resourceName = 'Plugin';
 
     const name = this.$route.params.name;
-    const resourceType = getTypeByName(resourceName);
+    const resourceType = this.getTypeByName(resourceName);
     const resourceFields = resourceType.fields
       .filter((field) => field.name !== 'name')
       .map((field) => field.name)
@@ -40,14 +37,12 @@ export default class UpdatePlugin extends ManageResource {
   protected async handleClickSubmit() {
     const name = this.$route.params.name;
     const resourceName = 'Plugin';
-    const updatePayloadType = getTypeByName(resourceName + 'UpdatePayload');
+    const updatePayloadType = this.getTypeByName(resourceName + 'UpdatePayload');
 
-    const resourceType = getTypeByName(resourceName);
+    const resourceType = this.getTypeByName(resourceName);
     const resourceFields = resourceType.fields
       .filter((field) => field.name !== 'name')
       .map((field) => field.name);
-
-
 
     const resourceInput = resourceFields.map(
       (row) => `${row}: ${convertToGQLScalar(this.item[row])}`,
@@ -68,18 +63,21 @@ export default class UpdatePlugin extends ManageResource {
       `,
     });
 
-    await this.$apollo.mutate({
-      mutation: gql`
-        mutation {
-          restart
-        }
-      `,
+    this.$store.commit('app/notify', {
+      message: 'Restart needed',
+      onClick: () => {
+        this.$router.push('/system');
+      },
     });
   }
 
-  protected getFieldByName(fieldName) {
+  protected getTypeByName(name: string) {
+    return this.$store.state.app.schema.types.find((type: any) => type.name === name);
+  }
+
+  protected getFieldByName(fieldName: string) {
     const resourceName = 'Plugin';
-    const resourceType = this.$store.state.schema.types.find(
+    const resourceType = this.$store.state.app.schema.types.find(
       (type) => type.name === resourceName,
     );
 

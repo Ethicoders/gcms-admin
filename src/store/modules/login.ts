@@ -11,22 +11,16 @@ const userModule = {
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
+    SET_TOKEN: (state: any, token: string) => {
       state.token = token;
     },
-    SET_SETTINGS: (state, settings) => {
+    SET_SETTINGS: (state: any, settings: any) => {
       state.settings = settings;
-    },
-    SET_NAME: (state, name) => {
-      state.name = name;
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles;
     },
   },
 
   actions: {
-    async login({ commit }, token) {
+    async login({ commit }, token: string) {
       commit('SET_TOKEN', token);
 
       localStorage.setItem('token', token);

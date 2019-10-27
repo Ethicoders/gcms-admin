@@ -1,18 +1,18 @@
 import Vue from 'vue';
 import Axios from 'axios';
 
-const service = Axios.create({
+const instance = Axios.create({
   baseURL: 'http://localhost:4001',
 });
 
-service.interceptors.request.use(
+instance.interceptors.request.use(
   (config) => {
     return config;
   },
   (error) => Promise.reject(error),
 );
 
-service.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -20,11 +20,12 @@ service.interceptors.response.use(
 );
 
 const plugin = {
-  install(Vue) {
-    Vue.prototype.$axios = service;
+  install() {
+    Vue.prototype.$axios = instance;
+    Vue.axios = instance;
   },
 };
 
 Vue.use(plugin);
 
-export default () => service;
+export default instance;

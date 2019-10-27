@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import FieldResolver from './fieldResolver';
 import {
   getSortedFlattenedType,
-  getMutationFieldByName,
+  // getMutationFieldByName,
   getTypesFromInputType,
   flattenType,
   getTypeByName,
@@ -23,6 +23,7 @@ export default class UpdateResource extends ManageResource {
 
     const id = this.$route.params.id;
     const resourceType = this.getCurrentResourceType();
+    
     const resourceFields = resourceType.fields
       .filter((field) => field.name !== 'id')
       .map((field) => field.name)

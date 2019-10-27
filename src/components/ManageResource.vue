@@ -22,6 +22,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import gql from 'graphql-tag';
 import FieldResolver from './fieldResolver';
+import { AppModule } from '@/utils/vuex';
 
 @Component({
   components: {
@@ -31,30 +32,30 @@ import FieldResolver from './fieldResolver';
 export default class ManageResource extends Vue {
   protected resourceFields = [];
   protected resourceType = {};
+  protected resourceName = '';
   protected item: any = {};
-  protected loading = true;
-  public async created() {
-    console.log(this);
+  @AppModule.State('schema')
+  protected schema: any;
 
+  public async created() {
     const resourceName = this.$route.params.resource;
     const id = this.$route.params.id;
     const resourceType = this.getCurrentResourceType();
 
     this.onInit();
-    this.loading = false;
   }
 
   protected abstract onInit();
 
   protected getCurrentResourceType() {
-    return this.$store.state.schema.types.find(
+    return this.schema.types.find(
       type => type.name === this.$route.params.resource
     );
   }
 
   protected getFieldByName(fieldName) {
     const resourceName = this.$route.params.resource;
-    const resourceType = this.$store.state.schema.types.find(
+    const resourceType = this.schema.types.find(
       type => type.name === resourceName
     );
 

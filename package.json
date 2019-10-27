@@ -13,6 +13,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "core-js": "^2.6.5",
+    "promise-all-properties": "^2.1.6",
     "quasar": "^1.0.0",
     "vue": "^2.6.10",
     "vue-apollo": "^3.0.0-beta.11",
@@ -22,7 +23,10 @@
     "vue-router": "^3.0.3",
     "vue-tsx-support": "^2.3.0",
     "vuex": "^3.0.1",
-    "vuex-typex": "^3.1.5"
+    "vuex-class": "^0.3.2",
+    "vuex-module-decorators": "^0.10.1",
+    "vuex-typex": "^3.1.5",
+    "ws": "^7.1.2"
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",

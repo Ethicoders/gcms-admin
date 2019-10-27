@@ -1,26 +1,17 @@
 import Vue from 'vue';
-import './plugins/axios';
 import App from './App.vue';
-import router from './router';
-import store from './store';
-import i18n from './i18n';
 import './quasar';
 import { createProvider } from './vue-apollo';
-import discover from './discover';
-console.log('in');
+import './styles/quasar.styl';
+import getPlugins from './plugins';
 
 Vue.config.productionTip = false;
 
 (async () => {
-  const schemaResponse = await Vue.axios.post('/graphql', {
-    query: discover,
-  });
+  const plugins = await getPlugins();
 
-  store.state.schema = schemaResponse.data.data.discover;
   new Vue({
-    router,
-    store,
-    i18n,
+    ...plugins,
     apolloProvider: createProvider(),
     render: (h) => h(App),
   }).$mount('#app');
